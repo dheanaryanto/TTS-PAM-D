@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "982816410937",
+    "firebase_url": "https://pamd-93ddc-default-rtdb.firebaseio.com",
+    "project_id": "pamd-93ddc",
+    "storage_bucket": "pamd-93ddc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982816410937:android:708ffd62c06087a4ebace8",
+        "android_client_info": {
+          "package_name": "edu.uksw.fti.pam.pam_activityintent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982816410937-fv0h8nb825h3pqi4u5g3r1vrs54m6698.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEloj-rGev72JJCkGGFt7XkZ_u239fJxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982816410937-fv0h8nb825h3pqi4u5g3r1vrs54m6698.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
