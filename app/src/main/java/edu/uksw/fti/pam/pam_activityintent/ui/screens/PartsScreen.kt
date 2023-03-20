@@ -329,8 +329,10 @@ fun CollapsedSearchView(
                 .size(40.dp)
                 .clip(CircleShape)
         )
-        IconButton(onClick = { onExpandedChanged(true) }) {
-            SearchIcon(iconTint = tint)
+        IconButton(onClick = { onExpandedChanged(true) },
+        ) {
+            SearchIcon(iconTint = tint,
+            )
         }
     }
 }

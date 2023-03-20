@@ -46,6 +46,7 @@
     <string name="btal">Batal</string>
     <string name="metodi">Metode Pembayaran :</string>
     <string name="qty">Jumlah :</string>
+    <string name="banyak">Tambah Jumlah Barang (maksimal pembelian 5 baran)</string>
 
 
 </resources>

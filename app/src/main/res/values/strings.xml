@@ -46,6 +46,7 @@
     <string name="btal">Cancel</string>
     <string name="metodi">Payment Method :</string>
     <string name="qty">Qty :</string>
+    <string name="banyak">Add Items Quantity (Max 5 Items)</string>
     <string name="title_activity_shop">ShopActivity</string>
 
 </resources>

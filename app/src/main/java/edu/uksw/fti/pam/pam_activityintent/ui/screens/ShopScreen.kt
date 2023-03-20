@@ -2,9 +2,11 @@ package edu.uksw.fti.pam.pam_activityintent.ui.screens
 
 import android.app.AlertDialog
 import android.icu.text.CaseMap.Title
+import android.util.Log
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 
 
@@ -32,10 +34,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.maxkeppeker.sheets.core.models.base.IconSource
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.option.OptionDialog
+import com.maxkeppeler.sheets.option.models.*
 import edu.uksw.fti.pam.pam_activityintent.R
 import edu.uksw.fti.pam.pam_activityintent.models.CartViewModel
 import edu.uksw.fti.pam.pam_activityintent.ui.BottomNavItems.Apparel.title
 import edu.uksw.fti.pam.pam_activityintent.ui.theme.*
+import java.time.format.DateTimeFormatter
 
 private val vm = CartViewModel ()
 
@@ -82,7 +89,6 @@ fun jdulcart(){
 
 @Composable
 fun MyCart(){
-    val list = createDataListCart()
     Row(
         modifier = Modifier
             .height(480.dp)
@@ -97,6 +103,7 @@ fun MyCart(){
 
         )
         LazyColumn(
+
             contentPadding = PaddingValues(start = 0.dp, top = 5.dp, end = 5.dp, bottom = 5.dp),
             modifier = Modifier
                 .height(475.dp),
@@ -106,6 +113,7 @@ fun MyCart(){
 //                }
                 items(vm.cartList.size) { index ->
                     Card(
+
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(4.dp),
@@ -114,9 +122,13 @@ fun MyCart(){
                         shape = RoundedCornerShape(6.dp)
 
                     ) {
+                        val message = remember { mutableStateOf("1") }
+                        val openDialog = remember { mutableStateOf(false) }
+                        val editMessage = remember { mutableStateOf("") }
                         Column(modifier = Modifier.fillMaxWidth()) {
                             Row(
                             ) {
+
                                 Image(
                                     painter = rememberAsyncImagePainter(vm.cartList[index].gambar),
                                     contentDescription = "",
@@ -124,7 +136,12 @@ fun MyCart(){
                                         .width(100.dp)
                                         .height(100.dp)
                                         .aspectRatio(1f)
-                                        .padding(top = 6.dp, start = 6.dp, end = 6.dp, bottom = 6.dp)
+                                        .padding(
+                                            top = 6.dp,
+                                            start = 6.dp,
+                                            end = 6.dp,
+                                            bottom = 6.dp
+                                        )
                                         .clip(RoundedCornerShape(6.dp)),
                                     contentScale = ContentScale.Crop
                                 )
@@ -151,15 +168,29 @@ fun MyCart(){
                                         text = stringResource(id = R.string.estimation), fontSize = 12.sp, color = kaburz, fontFamily = anekLight,
                                         modifier = Modifier.padding(top = 0.dp, start = 6.dp, end = 6.dp, bottom = 6.dp)
                                     )
-                                    Row(){
-                                        Text(text =  stringResource(id = R.string.qty), fontSize = 12.sp, color = kaburz, fontFamily = anekLight,
-                                            modifier = Modifier.padding(top = 0.dp, start = 6.dp, end = 6.dp, bottom = 6.dp)
-                                        )
-
-                                    }
-
 
                                 }
+
+                            }
+                            Row() {
+                                Image(
+                                    painter = painterResource(id = R.drawable.plus),
+                                    contentDescription = "banyak",
+                                    modifier = Modifier
+                                        .clickable {
+                                            editMessage.value = message.value
+                                            openDialog.value = true }
+                                        .padding(start = 6.dp, top = 3.dp)
+                                        .height(15.dp)
+                                )
+                                Text(
+                                    text = "Qty :", fontSize = 14.sp, color = Color.White, fontFamily = anekLight,
+                                    modifier = Modifier.padding(top = 0.dp, start = 6.dp, end = 6.dp, bottom = 6.dp)
+                                )
+                                Text(
+                                    text = message.value, fontSize = 14.sp, color = Color.White, fontFamily = anekLight,
+                                    modifier = Modifier.padding(top = 0.dp, start = 6.dp, end = 6.dp, bottom = 6.dp)
+                                )
 
                             }
                             Row() {
@@ -196,6 +227,67 @@ fun MyCart(){
                                     onCheckedChange = { checkedState.value = it },
                                 )
                             }
+                            if (openDialog.value) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .clickable(
+                                            interactionSource = remember { MutableInteractionSource() },
+                                            indication = null,
+                                            onClick = {
+                                                openDialog.value = false
+                                            }
+                                        ),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Column(
+                                        modifier = Modifier
+                                            .background(cokz)
+                                            .padding(8.dp),
+                                    ) {
+                                        Column(
+                                            modifier = Modifier
+                                                .padding(6.dp)
+                                                .fillMaxWidth(),
+                                        ) {
+                                            Text(text = "Quanitiy :")
+
+                                            Spacer(modifier = Modifier.height(8.dp))
+
+                                            TextField(
+                                                value = editMessage.value,
+                                                onValueChange = { editMessage.value = it },
+                                                singleLine = true
+                                            )
+                                        }
+
+                                        Spacer(modifier = Modifier.height(8.dp))
+
+                                        Row(
+                                            modifier = Modifier.align(Alignment.End)
+                                        ) {
+                                            Button(
+                                                onClick = {
+                                                    openDialog.value = false
+                                                }
+                                            ) {
+                                                Text("Cancel")
+                                            }
+
+                                            Spacer(modifier = Modifier.width(8.dp))
+
+                                            Button(
+                                                onClick = {
+                                                    message.value = editMessage.value
+                                                    openDialog.value = false
+                                                }
+                                            ) {
+                                                Text("OK")
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                     }
@@ -206,15 +298,6 @@ fun MyCart(){
 
 }
 
-fun createDataListCart():List<TestData3> {
-    val list = mutableListOf<TestData3>()
-
-    list.add(TestData3("Nismo Racing Classic Logo Hoodie Yellow on Black", R.drawable.hudi2,"IDR 3.000.000", "IDR 2.700.000" ))
-    list.add(TestData3("Nismo Racing Basic Logo Hoodie Black on Black", R.drawable.hudi, "IDR 3.000.000","IDR 2.700.000"))
-    list.add(TestData3("NISSAN GT-R (R35) Nissan Genuine Brake Kit", R.drawable.kaliperz, "IDR 30.000.000","IDR 27.000.000"))
-    list.add(TestData3("NISMO LightWeight Suspension Link Series", R.drawable.armz, "IDR 10.000.000", "IDR 9.000.000"))
-    return list
-}
 
 //@Composable
 //fun GridItemCart(testData3: TestData3){
@@ -395,7 +478,6 @@ fun MenuBayar(){
             vm.getCartList()
         }
     )
-    val list = createDataListCart()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -619,3 +701,9 @@ fun DefaultzPreview() {
 }
 
 
+@Composable
+fun CustomDialog(
+
+) {
+
+}
